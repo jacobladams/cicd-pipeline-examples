@@ -21,11 +21,21 @@ stages:
     displayName: Test
     dependsOn:
       - build
+    jobs:
+      - job: 
+        steps:
+          - script: echo Deploy to test!
+            displayName: 'Run a one-line script' 
   - stage: stage
     displayName: Stage
     dependsOn:
         - build
         - test
+    jobs:
+      - job: 
+        steps:
+          - script: echo Deploy to stage!
+            displayName: 'Run a one-line script' 
     
 
 # steps:
