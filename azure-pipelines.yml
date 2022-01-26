@@ -9,23 +9,42 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
+  - stage: build
+    displayName: Build
+    jobs:
+      - job: 
+        steps:
+          - script: echo Hello, world!
+            displayName: 'Run a one-line script' 
+  - stage: test
+    displayName: Test
+    dependsOn:
+      - build
+  - stage: stage
+    displayName: Stage
+    dependsOn:
+        - build
+        - test
+    
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: 'build'
-      projects: '*.sln'
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: 'test'
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'drop'
-      publishLocation: 'Container'
+# steps:
+# - script: echo Hello, world!
+#   displayName: 'Run a one-line script'
+
+# - script: |
+#     echo Add other tasks to build, test, and deploy your project.
+#     echo See https://aka.ms/yaml
+#   displayName: 'Run a multi-line script'
+#   - task: DotNetCoreCLI@2
+#     inputs:
+#       command: 'build'
+#       projects: '*.sln'
+#   - task: DotNetCoreCLI@2
+#     inputs:
+#       command: 'test'
+#   - task: PublishBuildArtifacts@1
+#     inputs:
+#       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#       ArtifactName: 'drop'
+#       publishLocation: 'Container'
